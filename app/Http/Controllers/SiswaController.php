@@ -42,7 +42,7 @@ class SiswaController extends Controller
             DB::table('siswa')->insert([
                 'nis' => $request->nis,
                 'nama' => $request->nama,
-                'kelas' => $request->kelas
+                'kode_kelas' => $request->kode_kelas
             ]);
             return redirect('datasiswa')->with('status', 'Jenis Barang berhasil ditambah..');
         }
@@ -68,9 +68,11 @@ class SiswaController extends Controller
      * @param  \App\Models\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Siswa $siswa)
+    public function edit($nis)
     {
-        //
+        $siswa = DB::table('siswa')->where('nis', $nis)->first();
+        $kelas = DB::table('kelas')->get();
+        return view('datasiswa.edit', compact('siswa', 'kelas'));
     }
 
     /**
@@ -80,9 +82,13 @@ class SiswaController extends Controller
      * @param  \App\Models\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Siswa $siswa)
+    public function update(Request $request, $id_jenis)
     {
-        //
+        $siswa = DB::table('siswa')->where('nis', $id_jenis)->update([
+            'nama' => $request->nama,
+            'kode_kelas' => $request->kode_kelas
+        ]);
+        return redirect('datasiswa')->with('status', 'Jenis Barang berhasil diubah..');
     }
 
     /**
@@ -91,8 +97,9 @@ class SiswaController extends Controller
      * @param  \App\Models\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Siswa $siswa)
+    public function destroy($nis)
     {
-        //
+        $siswa = DB::table('siswa')->where('nis', $nis)->delete();
+        return redirect('datasiswa')->with('status', 'Jenis Barang berhasil dihapus..');
     }
 }
