@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('guru', function (Blueprint $table) {
-            $table->string('nip')->primary();
+            $table->string('nuptk')->primary();
             $table->string('nama');
             $table->string('kode_jurusan');
 

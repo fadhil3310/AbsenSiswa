@@ -1,64 +1,45 @@
-@extends('main')
-@section('title','Cpanel')
-@section('breadcrumb')
-
-<main id="main" class="main">
-  <div class="pagetitle">
-    <h1>Dashboard</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url('./') }}">Home</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
-      </ol>
-    </nav>
-  </div><!-- End Page Title -->
-
-  <section class="section dashboard">
-    <div class="row">
-      <!-- Left side columns -->
-    <div class="col-lg-12">
-        <div class="row">
-            <div class="card recent-sales overflow-auto">
-                <div class="card-body">
-                    <h5 class="card-title">Edit Data Guru</h5>
-
-                    <!-- Horizontal Form -->
-                    <form class="form-horizontal" action="{{ url('guru/' . $jenis->nuptk)  }}" method="post" enctype="multipart/form-data">
-                        @method('patch')
+@extends('index')
+@section('konten')
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between">
+        <h1 class="mt-4">Ubah Data Guru</h1>
+    </div>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Data Guru</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-body">
+        <form class="form-horizontal" action="{{ url('dataguru/'.$guru->nuptk) }}" method="post" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="row mb-3">
                             <label for="nuptk" class="col-sm-2 col-form-label">NUPTK</label>
                             <div class="col-sm-10">
-                            <input type="text" class="form-control" name="nuptk" id="nuptk" value="{{ old('nuptk', $jenis->nuptk) }}" readonly>
+                            <input type="text" class="form-control" name="nuptk" id="nuptk" value="{{$guru->nuptk}}">
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="jenis_barang" class="col-sm-2 col-form-label">Nama Guru</label>
+                            <label for="nama" class="col-sm-2 col-form-label">Nama Guru</label>
                             <div class="col-sm-10">
-                            <input type="text" class="form-control" id="jenis_barang" name="jenis_barang" value="{{ old('jenis_barang', $jenis->jenis_barang) }}">
+                            <input type="text" class="form-control" name="nama" id="nama" value="{{$guru->nama}}">
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="jenis_barang" class="col-sm-2 col-form-label">Kelas</label>
+                            <label for="kode_jurusan" class="col-sm-2 col-form-label">Jurusan</label>
                             <div class="col-sm-10">
-                            <input type="text" class="form-control" id="jenis_barang" name="jenis_barang" value="{{ old('jenis_barang', $jenis->jenis_barang) }}">
-                            </div>
+                            <select id="kode_jurusan" name='kode_jurusan'>
+                            @foreach ($jurusan as $item)
+                                <option value="{{ $item->kode_jurusan }}">{{ $item->jurusan }} ({{ $item->kode_jurusan }})</option>
+                            @endforeach
+                            </select>
                         </div>
-                            <div class="row mb-3">
-                            <label for="jenis_barang" class="col-sm-2 col-form-label">Mapel</label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" id="jenis_barang" name="jenis_barang" value="{{ old('jenis_barang', $jenis->jenis_barang) }}">
-
-                        <div class="text-center">
-                            <button type="submit" id="simpan" name="simpan" class="btn btn-primary">Simpan</button>
-                            <button type="reset" class="btn btn-secondary">Clear</button>
-                        </div>
-                    </form>
+                <div class="form-group mb-3 text-end">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="reset" class="btn btn-danger">Reset</button>
                 </div>
-            </div>
+            </form>
         </div>
-      </div>
+
     </div>
-  </section>
-</main><!-- End #main -->
+</div>
 @endsection

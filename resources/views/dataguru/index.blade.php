@@ -41,10 +41,9 @@
                   <th scope="col">No</th>
                   <th scope="col">NUPTK</th>
                   <th scope="col">Nama Guru</th>
-                  <th scope="col">Alamat Guru</th>
-                  <th scope="col">Jabatan Guru</th>
-                  <th scope="col">Edit</th>
+                  <th scope="col">kode_jurusan</th>
                   <th scope="col">Delete</th>
+                  <th scope="col">Edit</th>
                 </tr>
               </thead>
               <tbody>
@@ -52,19 +51,18 @@
                 <tr>
                   <td>{{$loop -> iteration}}</td>
                   <td>{{$item -> nuptk}}</td>
-                  <td>{{$item -> nama_guru}}</td>
-                  <td>{{$item -> alamat_guru}}</td>
-                  <td>{{$item -> jabatan_guru}}</td>
+                  <td>{{$item -> nama}}</td>
+                  <td>{{$item -> kode_jurusan}}</td>
                   <td>
-                    <form action="{{ url('jeniss/' . $item->nis)}}" method="POST" class="d-inline"
-                      onsubmit="return confirm('Yakin Hapus Data')">
+                    <form action="{{ url('dataguru/' . $item->nuptk)}}" method="POST" class="d-inline"
+                      onsubmit="return confirm('Yakin Anda Akan Hapus Data')">
                       @method('delete')
                       @csrf
-                      <button class="btn btn-sucess btn-sm"><span class="bi bi-trash"></span></button>
+                      <button class="btn btn-sucess btn-sm"><i class="bi bi-trash"></i></button>
                     </form>
                   <td>
-                    <a href="{{ url('jeniss/' . $item->nis . '/edit') }}" class="text-primary">
-                      <span id="btnConfirm" class="bi bi-eyedropper"></span>
+                    <a href="{{ url('dataguru/' . $item->nuptk . '/edit') }}" class="text-primary">
+                        <i class="bi bi-pen"></i>
                     </a>
                   </td>
                 </tr>

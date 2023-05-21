@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\GuruMengajar;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GuruMengajarController extends Controller
 {
@@ -18,6 +20,14 @@ class GuruMengajarController extends Controller
         return view('datagurumengajar.index', compact('guru_mengajar'));
     }
 
+    public function get_data() {
+        $guru_mengajar = DB::table('guru_mengajar')->get();
+
+        return response()->json(['guru_mengajar' => $guru_mengajar]);
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -25,7 +35,10 @@ class GuruMengajarController extends Controller
      */
     public function create()
     {
-        //
+        $guru = DB::table('guru')->get();
+        $kelas = DB::table('kelas')->get();
+        $kurikulum = DB::table('kurikulum')->get();
+        return view('datagurumengajar.create', compact('guru', 'kelas', 'kurikulum'));
     }
 
     /**
@@ -36,7 +49,21 @@ class GuruMengajarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::table('guru_mengajar')->insert([
+                'kode_mengajar' => $request->kode_mengajar,
+                'nuptk' => $request->nuptk,
+                'kode_kelas' => $request->kode_kelas,
+                'kode_mapel' => $request->kode_mapel,
+                'hari' => $request->hari,
+                'jam_ke' => $request->jam_ke
+            ]);
+            return redirect('datagurumengajar')->with('status', 'Jenis Barang berhasil ditambah..');
+        }
+        catch (\Illuminate\Database\QueryException $ex) {
+            echo "Gagal ditambah " . $ex;
+            exit();
+        }
     }
 
     /**
@@ -56,9 +83,13 @@ class GuruMengajarController extends Controller
      * @param  \App\Models\GuruMengajar  $guruMengajar
      * @return \Illuminate\Http\Response
      */
-    public function edit(GuruMengajar $guruMengajar)
+    public function edit($kode_mengajar)
     {
-        //
+        $guru_mengajar = DB::table('guru_mengajar')->where('kode_mengajar', $kode_mengajar)->first();
+        $guru = DB::table('guru')->get();
+        $kelas = DB::table('kelas')->get();
+        $kurikulum = DB::table('kurikulum')->get();
+        return view('datagurumengajar.edit', compact('guru_mengajar', 'guru', 'kelas', 'kurikulum'));
     }
 
     /**
@@ -68,9 +99,17 @@ class GuruMengajarController extends Controller
      * @param  \App\Models\GuruMengajar  $guruMengajar
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GuruMengajar $guruMengajar)
+    public function update(Request $request, $kode_mengajar)
     {
-        //
+        $guru_mengajar = DB::table('guru_mengajar')->where('kode_mengajar', $kode_mengajar)->update([
+            'kode_mengajar' => $request->kode_mengajar,
+            'nuptk' => $request->nuptk,
+            'kode_kelas' => $request->kode_kelas,
+            'kode_mapel' => $request->kode_mapel,
+            'hari' => $request->hari,
+            'jam_ke' => $request->jam_ke
+        ]);
+        return redirect('datagurumengajar')->with('status', 'Jenis Barang berhasil diubah..');
     }
 
     /**
@@ -79,8 +118,9 @@ class GuruMengajarController extends Controller
      * @param  \App\Models\GuruMengajar  $guruMengajar
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GuruMengajar $guruMengajar)
+    public function destroy( $kode_mengajar)
     {
-        //
+        $guru_mengajar = DB::table('guru_mengajar')->where('kode_mengajar', $kode_mengajar)->delete();
+        return redirect('datagurumengajar')->with('status', 'Jenis Barang berhasil dihapus..');
     }
 }

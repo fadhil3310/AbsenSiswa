@@ -18,6 +18,8 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
@@ -67,13 +69,16 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Data:</h6>
-                        <a class="collapse-item" href="datasiswa">Data Siswa</a>
-                        <a class="collapse-item" href="dataguru">Data Guru</a>
-                        <a class="collapse-item" href="datagurumengajar">Data Guru Mengajar</a>
+                        <a class="collapse-item" href="{{ url('./datasiswa') }}">Data Siswa</a>
+                        <a class="collapse-item" href="{{ url('./datakelas') }}">Data Kelas</a>
+                        <a class="collapse-item" href="{{ url('./dataguru') }}">Data Guru</a>
+                        <a class="collapse-item" href="{{ url('./datagurumengajar') }}">Data Guru Mengajar</a>
+                        <a class="collapse-item" href="{{ url('./datajurusan') }}">Data Jurusan</a>
+                        <a class="collapse-item" href="{{ url('./datakurikulum') }}">Data Kurikulum</a>
                     </div>
                 </div>
             </li>
-            
+
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -89,7 +94,7 @@
                         <a class="collapse-item" href="kelasx">Kelas X</a>
                         <a class="collapse-item" href="kelasxi">Kelas XI</a>
                         <a class="collapse-item" href="kelasxii">Kelas XII</a>
-                        
+
                     </div>
                 </div>
             </li>
@@ -120,7 +125,7 @@
                 </div>
             </li>
 
-            
+
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -265,7 +270,10 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <button class="btn btn-primary" href="login.html">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -30,6 +30,11 @@ class GuruController extends Controller
         return view('dataguru.create', compact('jurusan'));
     }
 
+    public function guru_detail(Request $request) {
+        $nama = DB::table('guru')->select('nama')->where('nuptk', $request->nuptk)->first()->nama;
+        return response($nama);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -38,7 +43,19 @@ class GuruController extends Controller
      */
     public function store(Request $request)
     {
-        
+        try {
+            DB::table('guru')->insert([
+                'nuptk' => $request->nuptk,
+                'nama' => $request->nama,
+                'kode_jurusan' => $request->kode_jurusan,
+            ]);
+            return redirect('dataguru')->with('status', 'Jenis Barang berhasil ditambah..');
+        }
+        catch (\Illuminate\Database\QueryException $ex) {
+            echo "Gagal ditambah " . $ex;
+            exit();
+            //return redirect('dataguru')->with('status', 'Jenis Barang gagal ditambah..');
+        }
     }
 
     /**
@@ -58,9 +75,11 @@ class GuruController extends Controller
      * @param  \App\Models\Guru  $guru
      * @return \Illuminate\Http\Response
      */
-    public function edit(Guru $guru)
+    public function edit($nuptk)
     {
-        //
+        $guru = DB::table('guru')->where('nuptk', $nuptk)->first();
+        $jurusan = DB::table('jurusan')->get();
+        return view('dataguru.edit', compact('guru','jurusan'));
     }
 
     /**
@@ -70,9 +89,13 @@ class GuruController extends Controller
      * @param  \App\Models\Guru  $guru
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Guru $guru)
+    public function update(Request $request, $guru)
     {
-        //
+        $guru = DB::table('guru')->where('nuptk', $guru)->update([
+            'nama' => $request->nama,
+            'kode_jurusan' => $request->kode_jurusan
+        ]);
+        return redirect('dataguru')->with('status', 'Jenis Barang berhasil diubah..');
     }
 
     /**
@@ -81,8 +104,9 @@ class GuruController extends Controller
      * @param  \App\Models\Guru  $guru
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Guru $guru)
+    public function destroy($nuptk)
     {
-        //
+        $guru = DB::table('guru')->where('nuptk', $nuptk)->delete();
+        return redirect('dataguru')->with('status', 'Jenis Barang berhasil dihapus..');
     }
 }
