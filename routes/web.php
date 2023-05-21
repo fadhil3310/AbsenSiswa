@@ -15,13 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('dashboard');
-});
-
-
-// Manjemen data
-Route::resource('datasiswa', 'App\Http\Controllers\SiswaController');
-Route::resource('dataguru', 'App\Http\Controllers\GuruController');
+    return view('index');
+})->middleware(['auth', 'verified'])->name('/');
 
 //Route::get('/dashboard', function () { return redirect('/'); });
 
